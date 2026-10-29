@@ -21,6 +21,9 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: {{ .port }}
+          env:
+            - name: PORT
+              value: "{{ .port }}"
 ---
 apiVersion: v1
 kind: Service
@@ -29,12 +32,11 @@ metadata:
   labels:
     app: {{ .name }}
 spec:
-  type: {{ .type }}
+  type: {{ .type | default "ClusterIP" }}
   selector:
     app: {{ .name }}
   ports:
     - port: {{ .port }}
       targetPort: {{ .port }}
       name: http
----
 {{- end }}

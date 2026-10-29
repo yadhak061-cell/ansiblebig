@@ -32,7 +32,7 @@ jobs:
       - name: Build and Push All Images via Skaffold
         run: |
           cd temp-src
-          skaffold build --default-repo=boutiqueacr4516.azurecr.io --file-output=artifacts.json --platform=linux/amd64
+          skaffold build --default-repo=boutiqueacr4516.azurecr.io --file-output=artifacts.json --platform=linux/amd64 --tag latest
 
       - name: Set AKS Context
         uses: azure/aks-set-context@v3

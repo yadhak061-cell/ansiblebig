@@ -8,8 +8,14 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
+      - name: Checkout Code (Ansible & Helm)
         uses: actions/checkout@v4
+
+      - name: Clone Microservices Source Code
+        run: |
+          git clone https://github.com/GoogleCloudPlatform/microservices-demo.git temp-src
+          mkdir -p src
+          cp -r temp-src/src/* src/
 
       - name: Azure Login
         uses: azure/login@v2

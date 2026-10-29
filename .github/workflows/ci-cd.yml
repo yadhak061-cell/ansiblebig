@@ -14,8 +14,6 @@ jobs:
       - name: Clone Microservices Source Code
         run: |
           git clone https://github.com/GoogleCloudPlatform/microservices-demo.git temp-src
-          mkdir -p src
-          cp -r temp-src/src/* src/
 
       - name: Azure Login
         uses: azure/login@v2
@@ -26,15 +24,15 @@ jobs:
         run: |
           az acr login --name boutiqueacr4516
 
-      - name: Build and Push Microservices to ACR
+      - name: Install Skaffold
         run: |
-          SERVICES="frontend cartservice productcatalogservice currencyservice paymentservice shippingservice emailservice checkoutservice recommendationservice adservice loadgenerator"
-          
-          for service in $SERVICES; do
-            echo "Building and pushing $service..."
-            docker build -t boutiqueacr4516.azurecr.io/$service:latest ./src/$service
-            docker push boutiqueacr4516.azurecr.io/$service:latest
-          done
+          curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
+          sudo install skaffold /usr/local/bin/
+
+      - name: Build and Push All Images via Skaffold
+        run: |
+          cd temp-src
+          skaffold build --default-repo=boutiqueacr4516.azurecr.io --file-output=artifacts.json
 
       - name: Set AKS Context
         uses: azure/aks-set-context@v3

@@ -1,0 +1,40 @@
+name: CI/CD - Ansible + Helm to AKS
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Set AKS Context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: test
+          cluster-name: test
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+
+      - name: Install Python and Ansible
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip
+          pip3 install ansible
+
+      - name: Install Ansible Collections
+        run: |
+          ansible-galaxy collection install -r requirements.yml
+
+      - name: Run Ansible Playbook
+        run: |
+          ansible-playbook playbooks/deploy.yml

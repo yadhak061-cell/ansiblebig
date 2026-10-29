@@ -1,0 +1,17 @@
+---
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Ensure .kube directory exists
+      file:
+        path: "{{ lookup('env', 'HOME') }}/.kube"
+        state: directory
+        mode: '0755'
+
+    - name: Deploy Retail Microservices via Helm
+      kubernetes.core.helm:
+        name: retail-app
+        chart_path: "{{ playbook_dir }}/../charts/retail-app"
+        release_namespace: default
+        create_namespace: true
+        state: present

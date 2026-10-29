@@ -1,0 +1,5 @@
+apiVersion: v2
+name: retail-app
+description: Dynamic Helm chart for 11-tier Online Boutique microservices app
+version: 0.1.0
+appVersion: "1.0.0"

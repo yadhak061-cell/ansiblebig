@@ -1,0 +1,37 @@
+imageRegistry: "boutiqueacr4516.azurecr.io"
+imageTag: "latest"
+
+services:
+  - name: frontend
+    port: 8080
+    type: LoadBalancer
+  - name: cartservice
+    port: 7070
+    type: ClusterIP
+  - name: productcatalogservice
+    port: 3550
+    type: ClusterIP
+  - name: currencyservice
+    port: 7000
+    type: ClusterIP
+  - name: paymentservice
+    port: 50051
+    type: ClusterIP
+  - name: shippingservice
+    port: 50051
+    type: ClusterIP
+  - name: emailservice
+    port: 8080
+    type: ClusterIP
+  - name: checkoutservice
+    port: 5050
+    type: ClusterIP
+  - name: recommendationservice
+    port: 8080
+    type: ClusterIP
+  - name: adservice
+    port: 9555
+    type: ClusterIP
+  - name: loadgenerator
+    port: 8080
+    type: ClusterIP
